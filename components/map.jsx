@@ -100,7 +100,7 @@ const Map = props => {
   //   position: [-3.807751, 54.104682, 8000]
   // });
   
-  const lightingEffect = new LightingEffect({directionalLight});
+  const lightingEffect = new LightingEffect({directionalLight})
 
   // const layer = new EditableGeoJsonLayer({
   //   id: 'geojson',
@@ -152,12 +152,12 @@ const Map = props => {
         >
           
         </ReactMapGL>
-        {dataEvents && dataEvents.map((m, i) => 
+        {/* {dataEvents && dataEvents.map((m, i) => 
           <Marker 
             key={`marker-${i}`} 
             data={m}
             zoom={zoom}
-          />)}
+          />)} */}
       </DeckGL>
       {/* <ReactMapGL
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}

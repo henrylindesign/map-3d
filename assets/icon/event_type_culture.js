@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default props =>
+const Svg = props =>
   <svg className={props.className} viewBox="0 0 67.94 90.02">
     <defs>
       {/* <style>.cls-1{fill:#c4c4c4;stroke:#adadad;stroke-width:2px;}.cls-1,.cls-2{stroke-miterlimit:10;}.cls-2{fill:#fff;stroke:#969696;stroke-width:0.5px;}</style> */}
@@ -10,3 +10,5 @@ export default props =>
       <path class="cls-2" d="M43.93,20.18H23.82c-1.37,4.33-4.88,10-12.36,9.7a9.52,9.52,0,0,0,6.92,3.27h2.73V45h9.34V40.75a3.43,3.43,0,0,1,6.85,0V45h9.34V33.15h2.73a9.52,9.52,0,0,0,6.92-3.27C48.81,30.16,45.3,24.51,43.93,20.18Z"/>
     </g>
   </svg>
+
+export default Svg
