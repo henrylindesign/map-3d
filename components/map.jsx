@@ -10,8 +10,8 @@ import { registerLoaders } from "@loaders.gl/core"
 import { ScenegraphLayer } from '@deck.gl/mesh-layers'
 import { GLTFScenegraphLoader } from "@luma.gl/addons"
 import { EditableGeoJsonLayer } from '@nebula.gl/layers'
-import { AmbientLight, PointLight, LightingEffect, _SunLight as SunLight, DirectionalLight } from '@deck.gl/core'
-import { SolidPolygonLayer } from '@deck.gl/layers'
+import { LightingEffect, _SunLight as SunLight, DirectionalLight } from '@deck.gl/core'
+import { SolidPolygonLayer, IconLayer } from '@deck.gl/layers'
 
 import dataBases from '@data/marker-bases'
 import dataEvents from '@data/marker-events'
@@ -120,6 +120,28 @@ const Map = props => {
   //   }
   // });
 
+  const ICON_MAPPING = {
+    marker: {x: 0, y: 0, width: 128, height: 128, mask: true}
+  };
+  
+  console.log(dataEvents)
+  const iconArt = new IconLayer({
+    id: 'icon-layer',
+    data: dataEvents,
+    pickable: true,
+    // iconAtlas and iconMapping are required
+    // getIcon: return a string
+    iconAtlas: '/icon/event_type_ART.svg',
+    iconMapping: ICON_MAPPING,
+    getIcon: d => 'marker',
+// 
+    // sizeScale: 15,
+    getPosition: d => d.coordinates,
+    // getSize: d => 5,
+    // getColor: d => [Math.sqrt(d.exits), 140, 0]
+  });
+
+
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0">
       <DeckGL
@@ -132,9 +154,9 @@ const Map = props => {
         }}
         controller={true}
         // controller: {touchRotate: true, doubleClickZoom: false}
-        layers={[region1, scenegraphLayer1, region2, scenegraphLayer2]}
+        layers={[region1, scenegraphLayer1, region2, scenegraphLayer2, iconArt]}
         effects={[lightingEffect]}
-        getTooltip={({object}) => object && `${object.name}`}
+        // getTooltip={({object}) => object && `${object.name}`}
         // onZoom={e=>setZoom(e.viewState.zoom)}
         onInteractionStateChange={state => {
           if(state.isZooming) {
@@ -149,9 +171,7 @@ const Map = props => {
           ref={mapRef}
           mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
           mapStyle='mapbox://styles/baseddesign/cl09pliwq001814rv91e4x06q'
-        >
-          
-        </ReactMapGL>
+        />
         {/* {dataEvents && dataEvents.map((m, i) => 
           <Marker 
             key={`marker-${i}`} 

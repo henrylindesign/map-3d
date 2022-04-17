@@ -51,7 +51,7 @@
   dependencies:
     "@luma.gl/shadertools" "^8.5.10"
 
-"@deck.gl/geo-layers@^8.6.0":
+"@deck.gl/geo-layers@^8.6.0", "@deck.gl/geo-layers@^8.7.5":
   "integrity" "sha512-TK/fLRyEevk5xMF5l/tVJFSn4uoOpIa9gvQxmJSZCVZn4Kt865BEEVKNqeHq8h1tWKr/caO8EAGvhPSBLXz+/g=="
   "resolved" "https://registry.npmjs.org/@deck.gl/geo-layers/-/geo-layers-8.7.5.tgz"
   "version" "8.7.5"
