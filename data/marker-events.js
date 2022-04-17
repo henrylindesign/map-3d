@@ -1,20 +1,37 @@
 const data = [
   {
-    coordinates: [121.50295, 25.01997],
+    coordinates: [121.50325, 25.0197, 4],
     type: 'ART',
-    status: 'pending',
-    name: '凱達格蘭大道',
-  }, {
-    coordinates: [121.5039456, 25.0420842],
+  },
+  {
+    coordinates: [121.50355, 25.01975, 4],
+    type: 'ART',
+  },
+  {
+    coordinates: [121.5038, 25.0199, 4],
+    type: 'URBAN',
+  },
+  {
+    coordinates: [121.5037, 25.02005, 4],
     type: 'CULTURE',
-    status: 'process',
-    name: '龍山寺',
-  }, {
-    coordinates: [121.5362243, 25.0821503],
+  },
+
+  {
+    coordinates: [121.5024, 25.0200, 4],
     type: 'ART',
-    status: 'already',
-    name: '培英公園',
-  }
+  },
+  {
+    coordinates: [121.50315, 25.02036, 4],
+    type: 'ART',
+  },
+  {
+    coordinates: [121.50275, 25.01995, 4],
+    type: 'CULTURE',
+  },
+  {
+    coordinates: [121.50259, 25.01985, 4],
+    type: 'URBAN',
+  },
 ]
 
 export default data

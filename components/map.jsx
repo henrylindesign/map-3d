@@ -121,24 +121,48 @@ const Map = props => {
   // });
 
   const ICON_MAPPING = {
-    marker: {x: 0, y: 0, width: 128, height: 128, mask: true}
+    marker: {
+      x: 0,
+      y: 0,
+      // width: 128,
+      // height: 128,
+      // anchorY: 128,
+      mask: true
+    }
   };
   
   console.log(dataEvents)
-  const iconArt = new IconLayer({
+  const layerIconArt = new IconLayer({
     id: 'icon-layer',
     data: dataEvents,
     pickable: true,
     // iconAtlas and iconMapping are required
     // getIcon: return a string
-    iconAtlas: '/icon/event_type_ART.svg',
+    // iconAtlas: 'icon/event_type_ART.svg',
+    autoHighlight: true,
     iconMapping: ICON_MAPPING,
-    getIcon: d => 'marker',
-// 
-    // sizeScale: 15,
+    // getIcon: d => 'marker',
+    
+    getIcon: (d) => ({
+      url: `/icon/event_type_${d.type}.svg`,
+      width: 68,
+      height: 91
+    }),
+    sizeScale: zoom*5,
     getPosition: d => d.coordinates,
-    // getSize: d => 5,
+    // getSize: d => 10,
     // getColor: d => [Math.sqrt(d.exits), 140, 0]
+    loadOptions: {
+      image: {
+        type: 'image'
+      },
+      imagebitmap: {
+        premultiplyAlpha: 'none'
+      }
+    },
+    parameters: {
+      // blendFunc: [1, 771] // GL.ONE, GL.ONE_MINUS_SRC_ALPHA
+    },
   });
 
 
@@ -154,7 +178,7 @@ const Map = props => {
         }}
         controller={true}
         // controller: {touchRotate: true, doubleClickZoom: false}
-        layers={[region1, scenegraphLayer1, region2, scenegraphLayer2, iconArt]}
+        layers={[region1, scenegraphLayer1, region2, scenegraphLayer2, layerIconArt]}
         effects={[lightingEffect]}
         // getTooltip={({object}) => object && `${object.name}`}
         // onZoom={e=>setZoom(e.viewState.zoom)}
