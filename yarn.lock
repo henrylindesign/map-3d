@@ -44,7 +44,7 @@
     "math.gl" "^3.5.7"
     "mjolnir.js" "^2.5.0"
 
-"@deck.gl/extensions@^8.0.0", "@deck.gl/extensions@^8.6.0":
+"@deck.gl/extensions@^8.0.0", "@deck.gl/extensions@^8.6.0", "@deck.gl/extensions@^8.7.5":
   "integrity" "sha512-ALUUYuEOYDpW12H0Vx0tdXHKde6iQwnKULwKI33W8Xb65TMS4tbvAwQGmzNdohlwqtdG+4c3wwDqV+nJLIEbnA=="
   "resolved" "https://registry.npmjs.org/@deck.gl/extensions/-/extensions-8.7.5.tgz"
   "version" "8.7.5"
