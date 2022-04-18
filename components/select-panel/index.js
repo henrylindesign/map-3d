@@ -48,7 +48,7 @@ const SelectPanel = props => {
   }
 
   return (
-    <div className="fixed bottom-4 left-4 bg-white">
+    <div className="fixed bottom-0 left-0 bg-white">
       <select onChange={handleSelect}>
         {Object.keys(dataDistrict).map((d, i) => 
           <option key={`option-${d}`} value={i}>{dataDistrict[d].name}</option>  
