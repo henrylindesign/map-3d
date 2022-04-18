@@ -2,6 +2,7 @@ const data = [
   {
     name: '青年一期',
     modelUrl: '/model/I.gltf',
+    color: [223, 141, 96],
     coordinates: [121.50297, 25.01998],
     region: [
       [121.502848712118, 25.01991272969339],
@@ -14,6 +15,7 @@ const data = [
   {
     name: '青年二期',
     modelUrl: '/model/L.gltf',
+    color: [114, 181, 111],
     coordinates: [121.5029, 25.02000],
     
     region: [

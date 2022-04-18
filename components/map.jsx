@@ -2,76 +2,81 @@ import ReactMapGL from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import Marker from '@components/marker'
 // import getAllMarkers from '@apis/getAllMarkers'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 
 import DeckGL from '@deck.gl/react'
 
 import { registerLoaders } from "@loaders.gl/core"
 import { ScenegraphLayer } from '@deck.gl/mesh-layers'
 import { GLTFScenegraphLoader } from "@luma.gl/addons"
-import { EditableGeoJsonLayer } from '@nebula.gl/layers'
-import { LightingEffect, _SunLight as SunLight, DirectionalLight } from '@deck.gl/core'
 import { SolidPolygonLayer, IconLayer } from '@deck.gl/layers'
+import { MapboxLayer } from '@deck.gl/mapbox'
 
 import dataBases from '@data/marker-bases'
 import dataEvents from '@data/marker-events'
 
+import useStore from '@helpers/store'
+
 registerLoaders([GLTFScenegraphLoader])
 
-const defaultZoom = 13.4
 const zoomMarker = 17
 
 const Map = props => {
   const [markers, setMarkers] = useState(null)
+  // const [viewState, setViewState] = useState();
+  const viewState = useStore(state => state.viewState)
+  const defaultZoom = useStore(state => state.defaultZoom)
   const [zoom, setZoom] = useState(defaultZoom)
 
   const [glContext, setGLContext] = useState()
-  const deckRef = useRef(null);
-  const mapRef = useRef(null);
+  const deckRef = useRef(null)
+  const mapRef = useRef(null)
 
-  const scenegraphLayer1 = new ScenegraphLayer({
-    id: "scene",
-    scenegraph: '/model/I.gltf',
-    data: [dataBases[0]],
-    pickable: true,
-    // getScene: d => console.log(d),
-    getPosition: d => d.coordinates,
-    sizeScale: 80,
-    getColor: [223, 141, 96, zoom<zoomMarker?255:200],
-    getOrientation: [0, 50, 90],
-    // getTranslation: [0, 0, 100],
-    getScale: [1, 1, 1]
-  });
+
+  const baseLayers = dataBases.map((base, i) =>
+    new ScenegraphLayer({
+      id: `scene-${i}`,
+      scenegraph: base.modelUrl,
+      data: [base],
+      pickable: true,
+      // getScene: d => console.log(d),
+      getPosition: d => d.coordinates,
+      sizeScale: 80,
+      getColor: [...base.color, zoom<zoomMarker?255:200],
+      getOrientation: [0, 50, 90],
+      // getTranslation: [0, 0, 100],
+      getScale: [1, 1, 1]
+    }) 
+  )
+
+  // const onMapLoad = useCallback(() => {
+  //   const map = mapRef.current.getMap()
+  //   const deck = deckRef.current.deck
+
+  //   // You must initialize an empty deck.gl layer to prevent flashing
+  //   // map.addLayer(
+  //   //   // This id has to match the id of the deck.gl layer
+  //   //   new MapboxLayer({ id: "scene-1", deck })
+  //   //   // new MapboxLayer({ id: "scene-2", deck }),
+  //   //   // new MapboxLayer({ id: "my-scatterplot", deck }),
+  //   //   // new MapboxLayer({ id: "my-scatterplot", deck }),
+  //   //   // Optionally define id from Mapbox layer stack under which to add deck layer
+  //   //   // 'before-layer-id'
+  //   // )
+  // }, [])
 
   const region1 = new SolidPolygonLayer({
+    id: 'region-1',
     data: [dataBases[0]],
     getPolygon: d => d.region,
     getFillColor: [236, 222, 185],
-    extruded: false
-  })
-
-  const scenegraphLayer2 = new ScenegraphLayer({
-    id: "scene",
-    scenegraph: '/model/L.gltf',
-    data: [dataBases[1]],
-    pickable: true,
-    // onHover: (info, event) => console.log('Hovered:', info, event),
-    // getScene: d => console.log(d),
-    getPosition: d => d.coordinates,
-    sizeScale: 80,
-    getColor: [114, 181, 111, zoom<zoomMarker?255:200],
-    getOrientation: [0, 50, 90],
-    // getTranslation: [0, 0, 100],
-    getScale: [1, 1, 1]
   })
 
   const region2 = new SolidPolygonLayer({
+    id: 'region-2',
     data: [dataBases[1]],
     getPolygon: d => d.region,
     getFillColor: [206, 225, 198],
-    // getLineColor: [222, 188, 255],
-    // extruded: false
-    // extruded: true,
   })
 
   // const ambientLight = new SunLight({
@@ -80,58 +85,27 @@ const Map = props => {
   //   intensity: 1
   // });
   
-  const directionalLight= new DirectionalLight({
-    color: [255, 255, 255],
-    intensity: .1,
-    direction: [-1, -1, -1],
-    // _shadow: true
-  });
-  
+  // const directionalLight= new DirectionalLight({
+  //   color: [255, 255, 255],
+  //   intensity: .1,
+  //   direction: [-1, -1, -1],
+  //   // _shadow: true
+  // })
 
-  // const pointLight1 = new PointLight({
-  //   color: [255, 255, 0],
-  //   intensity: 0.8,
-  //   position: [-0.144528, 49.739968, 80000]
-  // });
-  
-  // const pointLight2 = new PointLight({
-  //   color: [255, 255, 0],
-  //   intensity: 0.8,
-  //   position: [-3.807751, 54.104682, 8000]
-  // });
-  
-  const lightingEffect = new LightingEffect({directionalLight})
-
-  // const layer = new EditableGeoJsonLayer({
-  //   id: 'geojson',
-  //   data: {
-  //     type: "FeatureCollection",
-  //     features: [
-  //     ]
-  //   },
-  //   // mode: 'drawPoint',
-  //   // selectedFeatureIndexes: this.state.selectedFeatureIndexes,
-
-  //   onEdit: ({ updatedData }) => {
-  //     console.log(updatedData)
-  //     // this.setState({
-  //     //   data: updatedData,
-  //     // });
-  //   }
-  // });
+  // const lightingEffect = new LightingEffect({directionalLight})
 
   const ICON_MAPPING = {
     marker: {
       x: 0,
       y: 0,
-      // width: 128,
-      // height: 128,
+      width: 68*1,
+      height: 91*1,
       // anchorY: 128,
       mask: true
     }
-  };
+  }
   
-  console.log(dataEvents)
+  // console.log(dataEvents)
   const layerIconArt = new IconLayer({
     id: 'icon-layer',
     data: dataEvents,
@@ -141,12 +115,13 @@ const Map = props => {
     // iconAtlas: 'icon/event_type_ART.svg',
     autoHighlight: true,
     iconMapping: ICON_MAPPING,
+    // alphaCutoff: 0,
     // getIcon: d => 'marker',
-    
+    getPixelOffset: [0, 0],
     getIcon: (d) => ({
       url: `/icon/event_type_${d.type}.svg`,
-      width: 68,
-      height: 91
+      width: 68*1,
+      height: 91*1
     }),
     sizeScale: zoom*5,
     getPosition: d => d.coordinates,
@@ -163,23 +138,21 @@ const Map = props => {
     parameters: {
       // blendFunc: [1, 771] // GL.ONE, GL.ONE_MINUS_SRC_ALPHA
     },
-  });
-
+  })
 
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0">
       <DeckGL
         ref={deckRef}
-        initialViewState={{
-          latitude: 25.032,
-          longitude: 121.536,
-          zoom: defaultZoom,
-          pitch: 45,
-        }}
+        initialViewState={viewState}
         controller={true}
         // controller: {touchRotate: true, doubleClickZoom: false}
-        layers={[region1, scenegraphLayer1, region2, scenegraphLayer2, layerIconArt]}
-        effects={[lightingEffect]}
+        layers={[
+          ...baseLayers,
+          region1, region2, 
+          layerIconArt
+        ]}
+        // effects={[lightingEffect]}
         // getTooltip={({object}) => object && `${object.name}`}
         // onZoom={e=>setZoom(e.viewState.zoom)}
         onInteractionStateChange={state => {
@@ -188,14 +161,23 @@ const Map = props => {
           }
           // console.log(state)
         }}
+        // onWebGLInitialized={setGLContext}
+        // glOptions={{
+        //   /* To render vector tile polygons correctly */
+        //   stencil: true
+        // }}
         // doubleClickZoom={false}
         // getCursor={() => "cell"}
       >
-        <ReactMapGL
-          ref={mapRef}
-          mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
-          mapStyle='mapbox://styles/baseddesign/cl09pliwq001814rv91e4x06q'
-        />
+        {/* {glContext && ( */}
+          <ReactMapGL
+            ref={mapRef}
+            // gl={glContext}
+            mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+            mapStyle='mapbox://styles/baseddesign/cl20jmvc2002615o4j8f95tzd'
+            // onLoad={onMapLoad}
+          />
+        {/* )} */}
         {/* {dataEvents && dataEvents.map((m, i) => 
           <Marker 
             key={`marker-${i}`} 
