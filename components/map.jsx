@@ -36,12 +36,12 @@ const Map = props => {
   const baseLayers = dataBases.map((base, i) =>
     new ScenegraphLayer({
       id: `scene-${i}`,
-      scenegraph: base.modelUrl,
+      scenegraph: `${base.modelUrl}?${i}`,
       data: [base],
       pickable: true,
       // getScene: d => console.log(d),
       getPosition: d => d.coordinates,
-      sizeScale: 80,
+      sizeScale: base.scale,
       getColor: [...base.color, zoom<zoomMarker?255:200],
       getOrientation: [0, 50, 90],
       // getTranslation: [0, 0, 100],
@@ -153,7 +153,7 @@ const Map = props => {
           layerIconArt
         ]}
         // effects={[lightingEffect]}
-        // getTooltip={({object}) => object && `${object.name}`}
+        getTooltip={({object}) => object && `${object.name}`}
         // onZoom={e=>setZoom(e.viewState.zoom)}
         onInteractionStateChange={state => {
           if(state.isZooming) {
