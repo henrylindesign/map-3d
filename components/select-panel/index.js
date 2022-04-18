@@ -49,16 +49,19 @@ const SelectPanel = props => {
 
   return (
     <div className="fixed bottom-0 left-0 bg-white">
+
       <select onChange={handleSelect}>
         {Object.keys(dataDistrict).map((d, i) => 
           <option key={`option-${d}`} value={i}>{dataDistrict[d].name}</option>  
         )}
       </select>
+
       <select >
         {dataMarkerBases.map((d, i) => 
           <option key={`option-${i}`}>{d.name}</option>  
         )}
       </select>
+      
     </div>
   )
 }
